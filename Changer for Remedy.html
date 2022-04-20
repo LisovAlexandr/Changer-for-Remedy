@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changer for Remedy</title>
+</head>
+<body>
+    
+<div style="text-align: center;">
+    <div> 
+        <textarea placeholder="Введите список МИ/проблем:
+MSK000000089746
+MSK000000089846
+..." style="margin: 10px;" id="input" cols="51" rows="15"></textarea>
+        <div>
+            <input style="font-weight: bold;" type="button" value="Convert problems"  onclick="changeToProblem()">
+            <input style="font-weight: bold;" type="button" value="Convert incidents" onclick="changeToIncident()">
+            <input type="button" value="Copy" style="width: 60px;" id='copy' onclick="copyResult()">
+            <input type="button" value="Clear" style="width: 60px;" onclick="clearInput()">
+        </div>
+        <textarea placeholder="Результат" style="margin: 10px;" id="output" cols="51" rows="15"></textarea>
+    </div>
+
+</div>  
+
+<Script>
+    function changeToProblem(){
+    
+        let inputed = document.getElementById('input').value.split('\n')
+        let result=[]
+
+        inputed.forEach(element => {
+            let arr=`'№ проблемы' LIKE "${element}"`
+            if (element) result.push(arr)
+            })
+
+        result = result.join(' OR ')
+        document.getElementById('output').value=result
+        document.getElementById('copy').value='Copy'
+        }
+
+    function changeToIncident(){
+    
+        let inputed = document.getElementById('input').value.split('\n')
+        let result=[]
+    
+        inputed.forEach(element => {
+            let arr=`'№ инцидента' LIKE "${element}"`
+            if(element) result.push(arr)
+            })
+    
+        result = result.join(' OR ')
+        document.getElementById('output').value=result
+        document.getElementById('copy').value='Copy'
+        }
+
+    function copyResult(){
+        let copyArea = document.getElementById('output')
+        navigator.clipboard.writeText(copyArea.value)
+        document.getElementById('copy').value='Copied!'
+    }
+
+    function clearInput(){
+        document.getElementById('input').value=''
+        document.getElementById('output').value=''
+        document.getElementById('copy').value='Copy'
+    }
+</Script>
+</body>
+</html>
